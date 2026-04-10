@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+
+/* ── Tokens ── */
+:root {
+  --brand:        #e8642a;
+  --brand-light:  #fff0e8;
+  --brand-dark:   #c04e18;
+  --bg-page:      #faf8f5;
+  --bg-card:      #ffffff;
+  --text-dark:    #1a1410;
+  --text-mid:     #6b5f55;
+  --text-light:   #a89a8e;
+  --star:         #f5a623;
+  --border:       #ede8e2;
+  --shadow:       0 2px 16px rgba(90,50,20,0.09);
+  --shadow-hover: 0 10px 40px rgba(90,50,20,0.16);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+  --radius:       16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-page);
+  color: var(--text-dark);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ── */
+.app-header {
+  position: relative;
+  background: linear-gradient(135deg, #e8642a 0%, #f5993a 60%, #fbb954 100%);
+  padding: 4rem 1.5rem 5rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.paw-bg {
+  position: absolute;
+  top: -20px; right: -20px;
+  font-size: 14rem;
+  opacity: 0.07;
+  transform: rotate(20deg);
+  pointer-events: none;
+  user-select: none;
+}
+
+.header-content { position: relative; z-index: 2; }
+
+.brand-pill {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 1rem;
+  border-radius: 99px;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.app-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.app-subtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.88);
+  max-width: 420px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.wave-divider {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50px;
+  pointer-events: none;
+}
+.wave-divider svg { width: 100%; height: 100%; display: block; }
+
+/* ── Main ── */
+.app-main {
+  padding: 3rem 1rem 4rem;
+  max-width: 1100px !important;
+}
+
+/* ── Footer ── */
+.app-footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+}
+
+/* Estilos para el Footer */
+.footer-custom {
+  background-color: #ffffff;
+  border-top: 1px solid #ede8e2;
+  color: #6b5f55;
+}
+
+.x-small {
+  font-size: 0.75rem;
+}
+
+.hover-warning:hover {
+  color: var(--brand) !important;
+  transition: 0.3s;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+}
