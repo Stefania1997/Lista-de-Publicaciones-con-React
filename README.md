@@ -11,17 +11,16 @@ utilizando **React** y consumo de **APIs externas**.
 ------------------------------------------------------------------------
 
 # 📚 Tabla de Contenido
-
--   Contexto del Proyecto
--   Objetivo del Proyecto
--   Tecnologías Utilizadas
--   Arquitectura del Proyecto
--   Estructura de Carpetas
--   Funcionalidades Implementadas
--   Manejo de Estados y Hooks
--   Diseño y UX
--   Cómo ejecutar el proyecto
--   Estado del Proyecto
+* [Contexto del Proyecto](#contexto-del-proyecto)
+* [Objetivo del Proyecto](#objetivo-del-proyecto)
+* [Tecnologías Utilizadas](#tecnologías-utilizadas)
+* [Arquitectura del Proyecto](#arquitectura-del-proyecto)
+* [Estructura de Carpetas](#estructura-de-carpetas)
+* [Funcionalidades Implementadas](#funcionalidades-implementadas)
+* [Manejo de Estados y Hooks](#manejo-de-estados-y-hooks)
+* [Diseño y UX](#diseño-y-ux)
+* [Cómo ejecutar el proyecto](#cómo-ejecutar-el-proyecto)
+* [Estado del Proyecto](#estado-del-proyecto)
 
 ------------------------------------------------------------------------
 <a name="contexto-del-proyecto"></a>
