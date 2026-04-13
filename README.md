@@ -1,248 +1,247 @@
-# 🐾 PawCare -- Sistema de Gestión de Cuidadores de Mascotas
+# PawCare — Directorio de Cuidadores de Mascotas
 
-Aplicación web desarrollada como solución digital para la búsqueda y
-gestión de cuidadores de mascotas, creada durante el **Módulo de React
--- Desarrollo de Aplicaciones Modernas**.
+![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES2020-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-El sistema permite visualizar un directorio de cuidadores profesionales,
-gestionar el acceso de usuarios y simular la contratación de servicios
-utilizando **React** y consumo de **APIs externas**.
+Aplicación web desarrollada como **proyecto integrador  – Fundamentos de React**.
 
-------------------------------------------------------------------------
+PawCare es un directorio interactivo de cuidadores de mascotas que consume una API externa para obtener datos reales, los combina con información local y los presenta en tarjetas visuales. Incluye un sistema de login y registro de usuarios.
 
-# 📚 Tabla de Contenido
-* [Contexto del Proyecto](#contexto-del-proyecto)
-* [Objetivo del Proyecto](#objetivo-del-proyecto)
-* [Tecnologías Utilizadas](#tecnologías-utilizadas)
-* [Arquitectura del Proyecto](#arquitectura-del-proyecto)
-* [Estructura de Carpetas](#estructura-de-carpetas)
-* [Funcionalidades Implementadas](#funcionalidades-implementadas)
-* [Manejo de Estados y Hooks](#manejo-de-estados-y-hooks)
-* [Diseño y UX](#diseño-y-ux)
-* [Cómo ejecutar el proyecto](#cómo-ejecutar-el-proyecto)
-* [Estado del Proyecto](#estado-del-proyecto)
+---
 
-------------------------------------------------------------------------
-<a name="contexto-del-proyecto"></a>
-# 🧠 Contexto del Proyecto
+## Tabla de Contenido
 
-**PawCare** nace de la necesidad de centralizar la búsqueda de personas
-calificadas para el cuidado de mascotas. En un entorno donde la
-confianza es clave, la plataforma ofrece un directorio dinámico donde
-los dueños pueden revisar perfiles, valoraciones y precios en un solo
-lugar.
+- [Descripción del Proyecto](#descripción-del-proyecto)
+- [Tecnologías Utilizadas](#tecnologías-utilizadas)
+- [Arquitectura del Proyecto](#arquitectura-del-proyecto)
+- [Estructura de Carpetas](#estructura-de-carpetas)
+- [Componentes](#componentes)
+- [Consumo de API](#consumo-de-api)
+- [Cómo Ejecutar el Proyecto](#cómo-ejecutar-el-proyecto)
+- [Estado del Proyecto](#estado-del-proyecto)
+- [Mejoras Futuras](#mejoras-futuras)
+- [Autores](#autores)
 
-### Problemas que resuelve
+---
 
--   Dispersión de información de cuidadores
--   Falta de transparencia en precios y reseñas
--   Dificultad para visualizar la disponibilidad inmediata
+## Descripción del Proyecto
 
-------------------------------------------------------------------------
-<a name="objetivo-del-proyecto"></a>
-# 🎯 Objetivo del Proyecto
+PawCare permite a los dueños de mascotas encontrar cuidadores disponibles en su ciudad. Cada cuidador muestra su nombre, ciudad, calificación, precio por día, servicios ofrecidos y un botón de contacto.
 
-Construir una **Single Page Application (SPA)** funcional que permita:
+La aplicación maneja tres estados posibles al cargar el directorio:
 
-✔ Visualizar una red de cuidadores mediante una API externa
-✔ Implementar un sistema de autenticación simulado (Login / Registro)
-✔ Gestionar la interfaz mediante renderizado condicional
-✔ Ofrecer una experiencia fluida con estados de carga y error
+- **Cargando** — muestra una animación de patitas 🐾 mientras espera la respuesta de la API
+- **Error** — muestra un mensaje descriptivo y un botón para reintentar
+- **Éxito** — renderiza las 10 tarjetas de cuidadores
 
-Utilizando:
+---
 
--   **React Hooks** (`useState`, `useEffect`)
--   **Fetch API** para datos asíncronos
--   **Bootstrap 5** para el sistema de diseño
+## Tecnologías Utilizadas
 
-------------------------------------------------------------------------
-<a name="tecnologías-utilizadas"></a>
-# 🧰 Tecnologías Utilizadas
+| Tecnología | Versión | Uso |
+|---|---|---|
+| React | 19.2 | Biblioteca principal de UI |
+| Vite | 8.0 | Bundler y servidor de desarrollo |
+| Bootstrap | 5.3 | Estilos y componentes visuales |
+| CSS3 | — | Estilos personalizados por componente |
+| JSONPlaceholder | API pública | Datos simulados de cuidadores |
 
-  Tecnología        Uso
-  ----------------- ------------------------
-  React 18          Biblioteca principal
-  Vite              Entorno de desarrollo
-  Bootstrap 5       Estilos y Layout
-  CSS3              Estilos personalizados
-  JSONPlaceholder   API de datos simulados
+---
 
-### Fuentes utilizadas
+## Arquitectura del Proyecto
 
--   **Fraunces** (Títulos)
--   **Plus Jakarta Sans** (Cuerpo)
+La aplicación es una **Single Page Application (SPA)** sin React Router. La navegación entre la vista principal y el login se maneja con `useState` en el componente raíz `App.jsx`.
 
-------------------------------------------------------------------------
-<a name="arquitectura-del-proyecto"></a>
-# 🏗 Arquitectura del Proyecto
-
-El sistema está construido bajo una **arquitectura de componentes
-reutilizables**.
-
-Los datos de los cuidadores se obtienen asíncronamente y se complementan
-con lógica interna:
-
-``` javascript
-const fetchCuidadores = async () => {
-  const res = await fetch('https://jsonplaceholder.typicode.com/users');
-  const data = await res.json();
-  setCuidadores(data.slice(0, 10));
-};
+```
+App.jsx
+  │
+  ├── useState: usuario        →  nombre del usuario logueado (o null)
+  ├── useState: showLogin      →  controla qué vista mostrar
+  │
+  ├── showLogin = true  →  <Login />
+  └── showLogin = false →  <CuidadoresList />
 ```
 
-El estado global del usuario se gestiona en el componente raíz
-(`App.jsx`) para permitir el acceso protegido a las funciones de la app.
+Los datos de los cuidadores se obtienen desde una API externa al montar el componente, usando `useEffect` + `fetch`.
 
-------------------------------------------------------------------------
-<a name="estructura-de-carpetas"></a>
-# 📂 Estructura de Carpetas
+---
 
-    project-root
-    │
-    ├── src
-    │   ├── components
-    │   │   ├── CuidadoresList.jsx   # Listado y lógica de API
-    │   │   ├── Login.jsx            # Formulario de acceso / registro
-    │   │
-    │   ├── App.jsx                  # Componente principal
-    │   ├── App.css                  # Estilos globales
-    │   └── main.jsx                 # Punto de entrada React
-    │
-    ├── public                       # Recursos estáticos
-    └── README.md
+## Estructura de Carpetas
 
-------------------------------------------------------------------------
-<a name="funcionalidades-implementadas"></a>
-# ⚙ Funcionalidades Implementadas
-
-## 🔐 Autenticación de Usuario
-
-Sistema simple que permite al usuario **iniciar sesión o registrarse**.
-
-Una vez autenticado:
-
--   Se guarda el nombre del usuario
--   Se actualiza el encabezado dinámicamente
-
-------------------------------------------------------------------------
-
-## 🐶 Directorio Dinámico
-
-Los perfiles de cuidadores se generan dinámicamente utilizando `map()`
-sobre los datos obtenidos desde la API.
-
-Cada tarjeta incluye:
-
--   Avatar personalizado
--   Sistema de calificación por estrellas
--   Precio por jornada
--   Descripción del servicio
-
-------------------------------------------------------------------------
-
-## ⏳ Gestión de Carga (Loading State)
-
-Se implementa un **estado de carga con una animación 🐾** mientras se
-obtienen los datos desde la API.
-
-Esto mejora la **percepción de rendimiento de la aplicación**.
-
-------------------------------------------------------------------------
-<a name="manejo-de-estados-y-hooks"></a>
-# 🧠 Manejo de Estados y Hooks
-
-Durante el desarrollo se aplicaron conceptos fundamentales de React:
-
-## useState
-
-Se utiliza para:
-
--   Controlar visibilidad del login
--   Almacenar los cuidadores
--   Guardar datos del formulario
-
-## useEffect
-
-Permite ejecutar la petición a la API **cuando el componente se monta**.
-
-## Props
-
-Se utilizan para comunicar información entre componentes, por ejemplo:
-
--   Enviar datos de autenticación desde `Login` hacia `App`.
-
-------------------------------------------------------------------------
-<a name="diseño-y-ux"></a>
-# 🎨 Diseño y UX
-
-El diseño de **PawCare** busca una estética **Pet-Friendly**.
-
-### Interfaz cálida
-
-Uso de **colores tierra y tonos naranjas orgánicos**.
-
-### Glassmorphism
-
-Efectos de **desenfoque en la navegación** para un estilo moderno.
-
-### Responsive Design
-
-Grid adaptable:
-
--   1 columna en móvil
--   2 columnas en tablet
--   3 columnas en escritorio
-
-### Feedback visual
-
--   Botones con efectos **hover**
--   Transiciones suaves
-
-------------------------------------------------------------------------
-<a name="como-ejecutar-el-proyecto"></a>
-# ▶ Cómo ejecutar el proyecto
-
-### 1️⃣ Clonar el repositorio
-
-``` bash
-git clone https://github.com/TU_USUARIO/pawcare.git
+```
+src/
+│
+├── main.jsx                        # Punto de entrada — enciende React
+├── App.jsx                         # Componente raíz — maneja la navegación
+├── App.css                         # Estilos del layout principal
+├── index.css                       # Estilos globales
+│
+├── Components/
+│   ├── CuidadoresList.jsx          # Lista completa de cuidadores
+│   ├── CuidadoresList.css          # Estilos de las tarjetas
+│   └── Login.jsx                   # Formulario de login y registro
+│
+└── assets/
+    ├── hero.png                    # Imagen principal
+    ├── react.svg                   # Logo de React
+    └── vite.svg                    # Logo de Vite
 ```
 
-### 2️⃣ Instalar dependencias
+---
 
-``` bash
+## Componentes
+
+### `App.jsx`
+
+Componente raíz de la aplicación. Controla dos estados:
+
+| Estado | Tipo | Descripción |
+|---|---|---|
+| `usuario` | `string \| null` | Nombre del usuario autenticado. `null` si no hay sesión |
+| `showLogin` | `boolean` | Si es `true` muestra el login, si es `false` muestra el directorio |
+
+Renderiza la **Navbar** y el **Footer** en todas las vistas. Decide qué mostrar en el área principal según `showLogin`.
+
+---
+
+### `CuidadoresList.jsx`
+
+Componente principal del directorio. Maneja la obtención de datos y el renderizado de tarjetas.
+
+**Estados internos:**
+
+| Estado | Tipo | Descripción |
+|---|---|---|
+| `cuidadores` | Array | Lista de cuidadores obtenida de la API |
+| `loading` | boolean | `true` mientras espera la respuesta |
+| `error` | `string \| null` | Mensaje de error si la petición falla |
+
+**Datos locales complementarios:**
+
+Como la API de prueba no provee datos específicos de cuidadores, el componente define arrays locales que se combinan con la respuesta de la API por índice:
+
+```javascript
+const PRECIOS    = [8500, 12000, 9800, ...]   // Precio por día en CLP
+const ESTRELLAS  = [4, 5, 5, 4, ...]          // Calificación sobre 5
+const RESENAS    = [38, 124, 57, ...]          // Número de reseñas
+const SERVICIOS  = [['Paseo', 'Guardería'], ...]
+const COMENTARIOS = ['Ama a los perros desde pequeña...', ...]
+const AVATARES   = ['🧑', '👩‍🦰', '👨‍🦳', ...]
+```
+
+**Subcomponentes internos:**
+
+- `StarRating` — Renderiza estrellas llenas (★) y vacías (☆) según la calificación
+- `CuidadorCard` — Tarjeta individual de un cuidador con todos sus datos
+
+---
+
+### `Login.jsx`
+
+Formulario con dos modos que alterna con `useState`:
+
+- **Iniciar Sesión** — solicita correo y contraseña
+- **Crear Cuenta** — solicita nombre, correo y contraseña
+
+Al enviar el formulario llama a `onAuth(nombre)` que notifica a `App.jsx` para actualizar el estado de sesión.
+
+---
+
+## Consumo de API
+
+El componente `CuidadoresList` consume la API pública **JSONPlaceholder** para obtener datos de usuarios de prueba:
+
+```
+GET https://jsonplaceholder.typicode.com/users
+```
+
+Se utilizan los primeros 10 resultados. De cada usuario se usan los campos `name`, `email` y `address.city`.
+
+**Implementación con `useEffect` y `fetch`:**
+
+```javascript
+useEffect(() => {
+  const fetchCuidadores = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch('https://jsonplaceholder.typicode.com/users')
+      if (!res.ok) throw new Error(`Error HTTP ${res.status}`)
+      const data = await res.json()
+      setCuidadores(data.slice(0, 10))
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+  fetchCuidadores()
+}, [])
+```
+
+El array vacío `[]` al final indica que el efecto se ejecuta **una sola vez**, al montar el componente.
+
+---
+
+## Cómo Ejecutar el Proyecto
+
+**Requisitos previos:** Node.js 18 o superior instalado.
+
+```bash
+# 1. Clonar el repositorio
+git clone <url-del-repositorio>
+
+# 2. Entrar a la carpeta
+cd Lista-de-Publicaciones-con-React
+
+# 3. Instalar dependencias
 npm install
-```
 
-### 3️⃣ Ejecutar en modo desarrollo
-
-``` bash
+# 4. Iniciar el servidor de desarrollo
 npm run dev
 ```
 
-------------------------------------------------------------------------
-<a name="estado-del-proyecto"></a>
-# 📌 Estado del Proyecto
+Abrir en el navegador: [http://localhost:5173](http://localhost:5173)
 
-✔ **MVP Completo**\
-Sistema de login y visualización de API funcional.
+**Otros comandos disponibles:**
 
-✔ **Consumo de API**\
-Integración exitosa con JSONPlaceholder.
+```bash
+npm run build    # Genera la versión de producción en /dist
+npm run preview  # Previsualiza la versión de producción localmente
+npm run lint     # Revisa errores de código con ESLint
+```
 
-✔ **Navegación SPA**\
-Transiciones entre vistas sin recarga de página.
+---
 
-------------------------------------------------------------------------
+## Estado del Proyecto
 
-# 👩‍💻 Autor
+- ✅ Consumo de API externa con manejo de estados (loading / error / éxito)
+- ✅ Renderizado dinámico de 10 tarjetas de cuidadores
+- ✅ Sistema de login y registro de usuarios
+- ✅ Navbar con estado de sesión (muestra nombre del usuario o botón de ingreso)
+- ✅ Diseño responsive con Bootstrap y CSS personalizado
+- ⏳ Sin React Router (navegación manejada con `useState`)
+- ⏳ Sin backend ni persistencia de datos
 
-Este proyecto fue desarrollado por **Gloria Cornelio** como
-parte del programa de formación en **Desarrollo Frontend**.
+---
 
-------------------------------------------------------------------------
+## Mejoras Futuras
 
-# 📄 Licencia
+- Agregar React Router para navegación con URLs
+- Implementar buscador y filtros por ciudad o servicio
+- Conectar con backend real para datos de cuidadores reales
+- Autenticación con JWT
+- Página de detalle individual por cuidador
+- Sistema de reservas de cuidadores
+- Despliegue en producción (Vercel / Netlify)
 
-Este proyecto es **open source con fines educativos**.\
-Puedes clonarlo, estudiarlo y mejorarlo libremente. 🐾
+---
+
+## Autores
+
+Proyecto desarrollado con fines educativos en el marco de un bootcamp de desarrollo Fullstack JavaScript.
+
+---
+
+*Este proyecto es de código abierto. Siéntete libre de explorarlo, clonarlo y proponer mejoras.*
