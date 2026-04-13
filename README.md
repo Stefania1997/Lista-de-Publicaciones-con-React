@@ -103,7 +103,6 @@ El estado global del usuario se gestiona en el componente raíz
     │   ├── components
     │   │   ├── CuidadoresList.jsx   # Listado y lógica de API
     │   │   ├── Login.jsx            # Formulario de acceso / registro
-    │   │   └── Footer.jsx           # Pie de página
     │   │
     │   ├── App.jsx                  # Componente principal
     │   ├── App.css                  # Estilos globales
